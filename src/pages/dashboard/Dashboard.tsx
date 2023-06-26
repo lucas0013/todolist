@@ -8,8 +8,9 @@ export const Dashboard = () => {
     <LayoutBaseDePagina
       titulo="Título" 
       barraDeFerramentas={(
-        <FerramentasDeDetalhe mostrarBotaoSalvarEFechar mostrarBotaoNovo mostrarBotaoSalvarEFecharCarregando/>
+        <FerramentasDeDetalhe />
       )}> 
+      
       Dashboard
 
     </LayoutBaseDePagina>
