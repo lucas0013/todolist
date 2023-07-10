@@ -60,11 +60,14 @@ const getById = async (id: number): Promise<IListagemTarefa | Error> => {
   }
 };
 
-const create = async (tarefa: IDetalheTarefa): Promise<any> => {
+const create = async (tarefa: Omit<IDetalheTarefa, 'id'>): Promise<any> => {
   try {
     const urlRelativa = '/Tarefas';	
 
-    await Api.post(urlRelativa, tarefa);
+    const { data } = await Api.post(urlRelativa, tarefa);
+
+    if (data)
+      return data;
 
     return new Error('Erro ao criar tarefa');
 
@@ -78,7 +81,11 @@ const updateById = async (tarefa: IDetalheTarefa): Promise<any> => {
   try {
     const urlRelativa = '/Tarefas';	
 
-    await Api.put(urlRelativa, tarefa);
+    const { data } = await Api.put(urlRelativa, tarefa);
+    
+
+    if (data)
+      return data;
 
     return new Error('Erro ao atualizar tarefa');
 
@@ -92,7 +99,10 @@ const deleteById = async (id: number): Promise<any> => {
   try {
     const urlRelativa = `/Tarefas/${id}`;	
 
-    await Api.delete(urlRelativa);
+    const { data } = await Api.delete(urlRelativa);
+
+    if (data)
+      return data;
 
     return new Error('Erro ao deletar tarefa');
 
