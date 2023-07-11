@@ -1,7 +1,7 @@
 import { Environment } from '../../../environment';
 import { Api } from '../axios-config';
 
-interface IListagemTarefa {
+export interface IListagemTarefa {
   id: number;
   titulo: string;
   descricao: string;
