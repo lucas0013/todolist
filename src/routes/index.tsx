@@ -2,7 +2,9 @@ import { useEffect } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 
 import { useDrawerContext } from '../shared/contexts';
-import { Dashboard, ListagemDeTarefa } from '../pages';
+import { Dashboard, DetalheDeTarefas, ListagemDeTarefas } from '../pages';
+import { ListagemDeCategorias } from '../pages/categorias/ListagemDeCategorias';
+import { DetalheDeCategorias } from '../pages/categorias/DetalheDeCategorias';
 
 export const AppRoutes = () => {
   const { setDrawerOptions } = useDrawerContext();
@@ -19,6 +21,11 @@ export const AppRoutes = () => {
         path: '/tarefas',
         label: 'Tarefas'
       },
+      {
+        icon: 'category',
+        path: '/categorias',
+        label: 'Categorias'
+      },
     ]);
   }, [setDrawerOptions]);
 
@@ -27,8 +34,11 @@ export const AppRoutes = () => {
     <Routes>
       <Route path="/home" element={<Dashboard/>} />
 
-      <Route path="/tarefas" element={<ListagemDeTarefa />} />
-      {/* <Route path="/tarefas/detalhe/:id" element={<ListagemDeTarefa />} /> */}
+      <Route path="/tarefas" element={<ListagemDeTarefas />} />
+      <Route path="/tarefas/detalhe/:id" element={<DetalheDeTarefas/>} />
+
+      <Route path="/categorias" element={<ListagemDeCategorias />} />
+      <Route path="/categorias/detalhe/:id" element={<DetalheDeCategorias/>} />
 
       <Route path="*" element={<Navigate to="/home" />} />
     </Routes>

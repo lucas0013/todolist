@@ -4,17 +4,17 @@ import { Api } from '../axios-config';
 export interface IListagemTarefa {
   id: number;
   titulo: string;
-  descricao: string;
+  descricao?: string;
   concluida: boolean;
-  tagId: number;
+  tagId?: number;
 }
 
 interface IDetalheTarefa {
   id: number;
   titulo: string;
-  descricao: string;
+  descricao?: string;
   concluida: boolean;
-  tagId: number;
+  tagId?: number;
 }
 
 type TTarefasPaginadas = {
@@ -60,7 +60,7 @@ const getById = async (id: number): Promise<IListagemTarefa | Error> => {
   }
 };
 
-const create = async (tarefa: Omit<IDetalheTarefa, 'id'>): Promise<any> => {
+const create = async (tarefa: Omit<Omit<IDetalheTarefa, 'id'>, 'concluida'>): Promise<number | Error> => {
   try {
     const urlRelativa = '/Tarefas';	
 
@@ -77,7 +77,7 @@ const create = async (tarefa: Omit<IDetalheTarefa, 'id'>): Promise<any> => {
   }
 };
 
-const updateById = async (tarefa: IDetalheTarefa): Promise<any> => {
+const updateById = async (tarefa: Omit<IDetalheTarefa, 'concluida'>): Promise<any> => {
   try {
     const urlRelativa = '/Tarefas';	
 

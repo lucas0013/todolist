@@ -1,18 +1,19 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { FerramentasDaListagem } from '../../shared/components';
 import { LayoutBaseDePagina } from '../../shared/layouts';
-import { IListagemTarefa, TarefasService } from '../../shared/services/api/tarefas/TarefasService';
+import { IListagemCategoria, CategoriasService } from '../../shared/services/api/categorias/CategoriasService';
 import { useDebounce } from '../../shared/hooks';
-import { LinearProgress, Pagination, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TableRow } from '@mui/material';
+import { Icon, IconButton, LinearProgress, Pagination, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TableRow } from '@mui/material';
 import { Environment } from '../../shared/environment';
 
 
-export const ListagemDeTarefa: React.FC = () => {
+export const ListagemDeCategorias: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { debounce } = useDebounce(300, false);
+  const navigate = useNavigate();
 
-  const [rows, setRows] = useState<IListagemTarefa[]>([]);
+  const [rows, setRows] = useState<IListagemCategoria[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [totalCount, setTotalCount] = useState(0);
   
@@ -29,7 +30,7 @@ export const ListagemDeTarefa: React.FC = () => {
     setIsLoading(true);
     
     debounce(() => {
-      TarefasService.getAll(Number(pagina), busca)
+      CategoriasService.getAll(Number(pagina), busca)
         .then((result) => {
           setIsLoading(false);
 
@@ -46,15 +47,32 @@ export const ListagemDeTarefa: React.FC = () => {
     });
   }, [busca, pagina]);
 
+  const handleDelete = (id: number) => {
+    if (confirm('Realmente deseja apagar?')) {
+      CategoriasService.deleteById(id)
+        .then((result) => {
+          if (result instanceof Error) {
+            alert(result.message);
+          } else {
+            setRows(oldRows => [
+              ...oldRows.filter(oldRow => oldRow.id !== id)
+            ]);
+            alert('Apagado com sucesso!');
+          }
+        });      
+    }
+  };
+
 
   return(
     <LayoutBaseDePagina 
-      titulo="Listagem de tarefas"
+      titulo="Listagem de categorias"
       barraDeFerramentas={
         <FerramentasDaListagem
           mostrarInputBusca
           textoDaBusca={busca}
           textoBotaoNovo='Nova'
+          aoClicarEmNovo={() => navigate('/categorias/detalhe/nova')}
           aoMudarTextDeBusca={texto => setSearchParams({ busca: texto , pagina: '1'}, {replace: true})}
         />
       }>
@@ -63,19 +81,22 @@ export const ListagemDeTarefa: React.FC = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Ações</TableCell>
-              <TableCell>Título</TableCell>
-              <TableCell>Descrição</TableCell>
-              <TableCell>Status</TableCell>
+              <TableCell width={100}>Ações</TableCell>
+              <TableCell>Nome</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {rows.map(row => (
               <TableRow key={row.id}>
-                <TableCell></TableCell>
-                <TableCell>{row.titulo}</TableCell>
-                <TableCell>{row.descricao}</TableCell>
-                <TableCell>{row.concluida ? 'Concluída' : 'Em andamento'}</TableCell>
+                <TableCell>
+                  <IconButton size='small' onClick={() => handleDelete(row.id)}>
+                    <Icon>delete</Icon>
+                  </IconButton>
+                  <IconButton size='small' onClick={() => navigate(`/categorias/detalhe/${row.id}`)}>
+                    <Icon>edit</Icon>
+                  </IconButton>
+                </TableCell>
+                <TableCell>{row.nome}</TableCell>
               </TableRow>
             ))}
           </TableBody>

@@ -8,7 +8,7 @@ interface IFerramentasDaListagemProps {
   aoMudarTextDeBusca?: (novoTexto: string) => void;
   textoBotaoNovo?: string;
   mostrarBotaoNovo?: boolean;
-  aoClicaremnovo?: () => void;
+  aoClicarEmNovo?: () => void;
 }
 
 export const FerramentasDaListagem: React.FC<IFerramentasDaListagemProps> = ({
@@ -17,7 +17,7 @@ export const FerramentasDaListagem: React.FC<IFerramentasDaListagemProps> = ({
   aoMudarTextDeBusca,
   textoBotaoNovo = 'Novo',
   mostrarBotaoNovo = true,
-  aoClicaremnovo,
+  aoClicarEmNovo,
 }) => {
   const theme = useTheme();
 
@@ -49,7 +49,7 @@ export const FerramentasDaListagem: React.FC<IFerramentasDaListagemProps> = ({
           color="primary"
           disableElevation
           variant="contained"
-          onClick={aoClicaremnovo}
+          onClick={aoClicarEmNovo}
           endIcon={<Icon>add</Icon>}
         >{textoBotaoNovo}</Button>
       </Box>)}
