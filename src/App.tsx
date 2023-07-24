@@ -4,23 +4,31 @@ import './shared/forms/TraducoesYup';
 
 import { AppThemeProvider } from './shared/contexts/ThemeContext';
 import { AppRoutes } from './routes';
-import { MenuLateral } from './shared/components';
-import { DrawerProvider } from './shared/contexts';
+import { Login, MenuLateral } from './shared/components';
+import { AuthProvider, DrawerProvider } from './shared/contexts';
 
 
 export const App = () => {
 
   return (
-    <AppThemeProvider>
-      <DrawerProvider>
-        <BrowserRouter>
+    <AuthProvider>
+      <AppThemeProvider>
 
-          <MenuLateral>
-            <AppRoutes />
-          </MenuLateral>
+        <Login>
+
+          <DrawerProvider>
+            <BrowserRouter>
+
+              <MenuLateral>
+                <AppRoutes />
+              </MenuLateral>
           
-        </BrowserRouter>
-      </DrawerProvider>
-    </AppThemeProvider>
+            </BrowserRouter>
+          </DrawerProvider>
+
+        </Login>
+
+      </AppThemeProvider>
+    </AuthProvider>
   );
 };
